@@ -11,7 +11,7 @@ export default function Home() {
                 prompts
             </p>
 
-            <Feed/>
+            <Feed />
         </section>
     )
 }

@@ -1,7 +1,6 @@
 import PromptCardList from "@components/PrompCardList";
 
 export default function Profile({ name, description, data, onEdit, onDelete}) {
-
     return (
         <section className='w-full'>
             <h1 className='head_text text-left'>
@@ -12,8 +11,9 @@ export default function Profile({ name, description, data, onEdit, onDelete}) {
             <div>
                 <PromptCardList
                     data={data}
-                    onDelete={() => {}}
-                    onEdit={() => {}}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    showButtons={true}
                 />
             </div>
 

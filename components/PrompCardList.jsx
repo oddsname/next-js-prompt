@@ -1,6 +1,6 @@
 import PromptCard from "@components/PromptCard";
 
-export default function PromptCardList({ data, onTagClick, onDelete, onEdit }) {
+export default function PromptCardList({ data, onTagClick, onDelete, onEdit, showButtons }) {
 
     return (
         <div className='mt-16 prompt_layout'>
@@ -11,6 +11,7 @@ export default function PromptCardList({ data, onTagClick, onDelete, onEdit }) {
                     onTagClick={() => onTagClick && onTagClick(prompt)}
                     onDelete={() => onDelete && onDelete(prompt)}
                     onEdit={() => onEdit && onEdit(prompt)}
+                    showButtons={showButtons}
                 />
             )}
         </div>

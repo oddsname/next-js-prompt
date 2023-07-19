@@ -16,7 +16,7 @@ export default function () {
         if(session?.user.id) {
             fetchUserPrompts()
         }
-    },[]);
+    },[session]);
 
     const fetchUserPrompts = async () => {
         const response = await fetch(`/api/users/${session?.user.id}/prompts`);
@@ -25,12 +25,24 @@ export default function () {
         setPrompts(data);
     }
 
-    const onEdit = async () => {
-
+    const onEdit = async (prompt) => {
+        router.push(`/update-prompt?id=${prompt._id}`)
     }
 
-    const onDelete = async () => {
+    const onDelete = async (prompt) => {
+        try {
+            const response = await fetch(`/api/prompt/${prompt._id}`, {
+                method: 'DELETE',
+            })
 
+            if(response.ok) {
+                await router.push('/');
+            } else {
+                throw new Error(response);
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (

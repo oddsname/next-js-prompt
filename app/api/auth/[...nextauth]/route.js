@@ -24,7 +24,7 @@ const handler = NextAuth({
                 return session;
             }
 
-            return null;
+            return '';
         },
         async signIn({profile}) {
             try {

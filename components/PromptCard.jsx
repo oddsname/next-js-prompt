@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 
-export default function PromptCard({ prompt, onTagClick, onEdit, onDelete }) {
+export default function PromptCard({ prompt, onTagClick, onEdit, onDelete, showButtons }) {
     const [copied, setCopied] = useState('');
     const { data: session } = useSession();
 
@@ -22,7 +22,7 @@ export default function PromptCard({ prompt, onTagClick, onEdit, onDelete }) {
     }
 
     const renderButtons = () => {
-        if(session?.user.id !== prompt.user_id._id) {
+        if(session?.user.id !== prompt.user_id._id || !showButtons) {
             return '';
         }
 

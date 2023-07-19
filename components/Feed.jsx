@@ -38,6 +38,7 @@ export default function Feed() {
             <PromptCardList
                 data={prompts}
                 onTagClick={() => {}}
+                showButtons={false}
             />
         </section>
     );

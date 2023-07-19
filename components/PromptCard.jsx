@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
 
-export default function PromptCard({ prompt, onTagClick }) {
+export default function PromptCard({ prompt, onTagClick, onEdit, onDelete }) {
     const [copied, setCopied] = useState('');
+    const { data: session } = useSession();
 
     const getIcon = () => {
         return prompt.prompt === copied ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'
@@ -19,6 +19,23 @@ export default function PromptCard({ prompt, onTagClick }) {
         setTimeout(() => {
             setCopied('')
         }, 3000)
+    }
+
+    const renderButtons = () => {
+        if(session?.user.id !== prompt.user_id._id) {
+            return '';
+        }
+
+        return (
+            <div className='mg-5 flex-center gap-4 border-t border-gray-100 pt-3'>
+                <p className='text-sm green_gradient cursor-pointer' onClick={() => onEdit(prompt)}>
+                    Edit
+                </p>
+                <p className='text-sm orange_gradient cursor-pointer' onClick={() => onDelete(prompt)}>
+                    Delete
+                </p>
+            </div>
+        );
     }
 
     return (
@@ -40,6 +57,8 @@ export default function PromptCard({ prompt, onTagClick }) {
 
             <p className='my-4 text-sm text-gray-700'>{prompt.prompt}</p>
             <p className='text-sm blue_gradient cursor-pointer' onClick={() => onTagClick && onTagClick(prompt)}>#{prompt.tag}</p>
+
+            { renderButtons() }
         </div>
     );
 }

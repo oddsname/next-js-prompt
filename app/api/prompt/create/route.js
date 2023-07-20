@@ -8,7 +8,7 @@ export const POST = async (req, res) => {
         await connectDB();
 
         const newPrompt = new Prompt({
-            user_id: userId,
+            author: userId,
             prompt: data.prompt,
             tag: data.tag,
         });

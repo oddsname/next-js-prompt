@@ -8,7 +8,7 @@ export const GET = async (req, {params}) => {
     try {
         await connectDB();
 
-        const prompt = await Prompt.findById(params.id).populate('user_id');
+        const prompt = await Prompt.findById(params.id).populate('author');
 
         if (!prompt) {
             return new Response("Not found", {status: 404});
@@ -26,7 +26,7 @@ export const PATCH = async (req, { params }) => {
 
         const {prompt, tag} = await req.json();
 
-        const existingPrompt = await Prompt.findById(params.id).populate('user_id');
+        const existingPrompt = await Prompt.findById(params.id).populate('author');
 
         if (!existingPrompt) {
             return new Response("Not found", {status: 404});
@@ -49,14 +49,14 @@ export const DELETE = async (req, { params }) => {
         await connectDB();
         const session = await getServerSession({req});
 
-        const prompt = await Prompt.findById(params.id).populate('user_id');
+        const prompt = await Prompt.findById(params.id).populate('author');
         const user = await User.findOne({ email: session?.user?.email });
 
         if(!prompt) {
             return new Response("Not found", {status: 404});
         }
 
-        if(!user?._id.equals(prompt.user_id._id)) {
+        if(!user?._id.equals(prompt.author._id)) {
             return new Response("Not Allowed", {status: 401});
         }
 

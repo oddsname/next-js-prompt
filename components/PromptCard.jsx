@@ -22,7 +22,7 @@ export default function PromptCard({ prompt, onTagClick, onEdit, onDelete, showB
     }
 
     const renderButtons = () => {
-        if(session?.user.id !== prompt.user_id._id || !showButtons) {
+        if(session?.user.id !== prompt.author._id || !showButtons) {
             return '';
         }
 
@@ -42,11 +42,11 @@ export default function PromptCard({ prompt, onTagClick, onEdit, onDelete, showB
         <div className='prompt_card'>
             <div className='flex justify-between items-start gap-5'>
                 <div className='flex-1 flex justify-start items-center gap-3 cursor-pointer'>
-                    <Image src={prompt.user_id.image} alt="user_image" width={40} height={40} className='rounded-full object-contain' />
+                    <Image src={prompt.author.image} alt="user_image" width={40} height={40} className='rounded-full object-contain' />
 
                     <div className='flex flex-col'>
-                        <h3 className='text-gray-900'>{prompt.user_id.username}</h3>
-                        <p className='text-sm text-gray-500' >{prompt.user_id.email}</p>
+                        <h3 className='text-gray-900'>{prompt.author.username}</h3>
+                        <p className='text-sm text-gray-500' >{prompt.author.email}</p>
                     </div>
                 </div>
 

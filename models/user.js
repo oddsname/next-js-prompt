@@ -12,7 +12,11 @@ const UserSchema = new Schema({
     },
     image: {
         type: String,
-    }
+    },
+    prompts: [{
+        type: Schema.Types.ObjectId,
+        ref: "Prompt"
+    }]
 });
 
 //we need this because next backend works as serverless functions and it always creates new DB connections

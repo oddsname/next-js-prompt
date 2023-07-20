@@ -5,10 +5,24 @@ export const GET = async (req) => {
     try {
         await connectDB();
 
-        const prompts = await Prompt.find({}).populate('user_id');
+        const {searchParams} = new URL(req.url)
+        const text = searchParams.get('text');
 
-        return new Response(JSON.stringify(prompts), { status: 200});
+        let filters = {};
+
+        if (text) {
+            filters = {
+                $or: [
+                    {prompt: {$regex: text}},
+                    {tag: {$regex: text}},
+                ]
+            };
+        }
+
+        const prompts = await Prompt.find(filters).populate('author');
+
+        return new Response(JSON.stringify(prompts), {status: 200});
     } catch (err) {
-        return new Response("Something went wrong, ERROR: " + err.message, { status: 500});
+        return new Response("Something went wrong, ERROR: " + err.message, {status: 500});
     }
 }

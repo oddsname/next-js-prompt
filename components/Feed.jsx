@@ -1,25 +1,42 @@
 "use client"
-import { useState, useEffect } from "react";
-import PromptCard from "@components/PromptCard";
+import {useState, useEffect} from "react";
 import PromptCardList from "@components/PrompCardList";
+import {debounce} from "@utils/debounce";
 
 export default function Feed() {
     const [searchText, setSearchText] = useState('');
     const [prompts, setPrompts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchPrompts()
     },[]);
 
-    const fetchPrompts = async () => {
-        const response = await fetch('/api/prompt');
+    useEffect(() => {
+        setLoading(true);
+        debounce(async () => {
+            await fetchPrompts(searchText);
+            setLoading(false);
+        }, 300)
+    }, [searchText])
+
+    const fetchPrompts = async (text = null) => {
+        const url = text
+            ? `/api/prompt?text=${text}`
+            : '/api/prompt'
+
+        const response = await fetch(url);
         const data = await response.json();
 
         setPrompts(data);
     }
 
-    const onSearchChange = (e) => {
+    const onSearchChange = async (e) => {
         setSearchText(e.target.value);
+    }
+
+    const onTagClick = async (prompt) => {
+       setSearchText(prompt.tag);
     }
 
     return (
@@ -35,11 +52,15 @@ export default function Feed() {
                 />
             </form>
 
-            <PromptCardList
-                data={prompts}
-                onTagClick={() => {}}
-                showButtons={false}
-            />
+            { loading
+                ? <div className='mt-16'>...Loading</div>
+                :  <PromptCardList
+                    data={prompts}
+                    onTagClick={onTagClick}
+                    showButtons={false}
+                />
+            }
+
         </section>
     );
 }
